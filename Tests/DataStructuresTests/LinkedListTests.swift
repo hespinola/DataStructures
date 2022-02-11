@@ -138,5 +138,29 @@ final class LinkedListTests: XCTestCase {
         XCTAssertEqual(linkedList.head?.value, 1)
         XCTAssertEqual(linkedList.tail?.value, 2)
     }
+    
+    func testCollectionImplementation() {
+        var linkedList = LinkedList<Int>()
+        
+        linkedList.append(1)
+        linkedList.append(2)
+        linkedList.append(3)
+        
+        let sum = linkedList.reduce(0, +)
+        XCTAssertEqual(sum, 6)
+        let firstValue = linkedList[linkedList.startIndex]
+        XCTAssertEqual(1, firstValue)
+    }
+    
+    func testValueSemantics() {
+        let array = [1, 2, 3]
+        var list1 = LinkedList<Int>()
+        list1.addAll(array)
+        var list2 = list1
+        
+        list2.append(4)
+        
+        XCTAssertNotEqual(list1.tail?.value, list2.tail?.value)
+    }
 }
 

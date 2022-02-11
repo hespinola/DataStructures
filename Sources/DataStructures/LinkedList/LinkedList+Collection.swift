@@ -10,7 +10,7 @@ extension LinkedList: Collection {
             case (nil, nil):
                 return true
             default:
-                false
+                return false
             }
         }
         
@@ -35,7 +35,7 @@ extension LinkedList: Collection {
         Index(node: i.node?.next)
     }
     
-    public func subscript(position: Index) -> T {
+    public subscript(position: Index) -> T {
         position.node!.value
     }
 }
