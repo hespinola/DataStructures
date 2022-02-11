@@ -80,4 +80,81 @@ public struct LinkedList<T> where T: Equatable {
         
         listNode.next = LinkedListNode(value: value, next: listNode.next)
     }
+    
+    /// Pop first element from list
+    /// Complexity: O(1)
+    /// - Returns: Returns first element if any
+    public mutating func pop() -> T? {
+        defer {
+            head = head?.next
+            if isEmpty {
+                tail = nil
+            }
+        }
+        return head?.value
+    }
+    
+    /// Remove last item from the list
+    /// Complexity: O(n) where n is the length of the list
+    /// - Returns: Returns the last element if any
+    public mutating func removeLast() -> T? {
+        guard let _ = head else {
+            return nil
+        }
+        
+        guard head?.next != nil else {
+            return pop()
+        }
+        
+        var previousNode = head
+        var currentNode = head
+        
+        while let next = currentNode?.next {
+            previousNode = currentNode
+            currentNode = next
+        }
+        
+        previousNode?.next = nil
+        tail = previousNode
+        return currentNode?.value
+    }
+    
+    /// Remove all items from the list
+    /// Complexity: O(n) where n is the length of the list
+    public mutating func removeAll() {
+        var currentNode = head
+        
+        while let next = currentNode?.next {
+            currentNode?.next = nil
+            currentNode = next
+        }
+        
+        head = nil
+    }
+    
+    /// Removes node at index and returns its value
+    /// - Parameter index: Position to remove
+    /// - Returns: Returns removed value if any
+    public mutating func remove(at index: Int) -> T? {
+        var currentIndex = 0
+        var currentNode = head
+        var previousNode = head
+        
+        while let next = currentNode?.next, currentIndex < index {
+            previousNode = currentNode
+            currentNode = next
+            currentIndex += 1
+        }
+        
+        guard currentNode != tail else {
+            defer {
+                previousNode?.next = nil
+                tail = previousNode
+            }
+            return currentNode?.value
+        }
+        
+        previousNode?.next = currentNode?.next
+        return currentNode?.value
+    }
 }

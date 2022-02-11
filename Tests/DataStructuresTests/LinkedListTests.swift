@@ -88,5 +88,55 @@ final class LinkedListTests: XCTestCase {
         XCTAssertEqual(linkedList.value(at: 3), 3)
         XCTAssertEqual(linkedList.value(at: 2), 2)
     }
+    
+    func testPopFromList() {
+        var linkedList = LinkedList<Int>()
+        
+        linkedList.push(1)
+        linkedList.append(2)
+        linkedList.append(3)
+        
+        XCTAssertEqual(linkedList.pop(), 1)
+    }
+    
+    func testRemoveLastFromList() {
+        var linkedList = LinkedList<Int>()
+        
+        linkedList.push(1)
+        linkedList.append(2)
+        linkedList.append(3)
+        
+        XCTAssertEqual(linkedList.removeLast(), 3)
+    }
+    
+    func testRemoveAllFromList() {
+        var linkedList = LinkedList<Int>()
+        
+        linkedList.append(1)
+        linkedList.append(2)
+        linkedList.append(3)
+        
+        XCTAssertFalse(linkedList.isEmpty)
+        
+        linkedList.removeAll()
+        
+        XCTAssertTrue(linkedList.isEmpty)
+    }
+    
+    func testRemoveAtIndex() {
+        var linkedList = LinkedList<Int>()
+        
+        linkedList.append(1)
+        linkedList.append(2)
+        linkedList.append(3)
+        linkedList.append(4)
+        
+        var value = linkedList.remove(at: 2)
+        XCTAssertEqual(value, 3)
+        value = linkedList.remove(at: 2)
+        XCTAssertEqual(value, 4)
+        XCTAssertEqual(linkedList.head?.value, 1)
+        XCTAssertEqual(linkedList.tail?.value, 2)
+    }
 }
 
