@@ -3,14 +3,20 @@ import XCTest
 
 final class StackTests: XCTestCase {
     func testCreateEmptyStack() throws {
-        XCTAssertEqual(Stack<Int>().isEmpty, true)
+        let stack = Stack<Int>()
+        
+        XCTAssertTrue(stack.isEmpty)
     }
     
     func testPushIntoStack() throws {
         var stack = Stack<Int>()
-        let value = 15
-        stack.push(value)
-        XCTAssertEqual(stack.top(), value)
+        
+        stack.push(1)
+        stack.push(2)
+        stack.push(3)
+        
+        XCTAssertFalse(stack.isEmpty)
+        XCTAssertEqual(stack.peek(), 3)
     }
     
     func testReverseArray() throws {
@@ -25,7 +31,7 @@ final class StackTests: XCTestCase {
         array.removeAll()
         
         while !stack.isEmpty {
-            array.append(stack.pop()!)
+            array.append(stack.popLast()!)
         }
         
         XCTAssertEqual(array, reversed)
