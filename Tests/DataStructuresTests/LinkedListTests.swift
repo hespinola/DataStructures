@@ -149,5 +149,28 @@ final class LinkedListTests: XCTestCase {
         
         XCTAssertEqual(expected, result)
     }
+    
+    func testReverseLinkedList() {
+        let original = "1 -> 2 -> 3 -> 4 -> 5 -> nil"
+        let reversed = "5 -> 4 -> 3 -> 2 -> 1 -> nil"
+        
+        var linkedList = LinkedList<Int>()
+        
+        linkedList.addLast(1)
+        linkedList.addLast(2)
+        linkedList.addLast(3)
+        linkedList.addLast(4)
+        linkedList.addLast(5)
+        
+        var output = linkedList.printList()
+        
+        XCTAssertEqual(original, output)
+        
+        linkedList.reverse()
+        
+        output = linkedList.printList()
+        
+        XCTAssertEqual(reversed, output)
+    }
 }
 

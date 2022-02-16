@@ -136,6 +136,28 @@ public struct LinkedList<T> {
         previousNode?.next = currentNode?.next
     }
     
+    /// Reverses Linked List
+    /// Complexity: O(n)
+    public mutating func reverse() {
+        var previousNode: LinkedListNode<T>? = nil
+        var currentNode = head
+        var nextNode = currentNode?.next
+        
+        while nextNode != nil {
+            currentNode?.next = previousNode
+            previousNode = currentNode
+            currentNode = nextNode
+            
+            nextNode = currentNode?.next
+        }
+        
+        currentNode?.next = previousNode
+        
+        let temp = head
+        head = tail
+        tail = temp
+    }
+    
     @discardableResult
     public func printList() -> String {
         var currentNode = head
