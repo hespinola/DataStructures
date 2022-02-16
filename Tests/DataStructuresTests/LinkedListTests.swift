@@ -7,160 +7,147 @@ final class LinkedListTests: XCTestCase {
         XCTAssertTrue(linkedList.isEmpty)
     }
     
-    func testPushingValuesToList() {
+    func testAddFirst() {
         var linkedList = LinkedList<Int>()
         
-        linkedList.push(1)
-        linkedList.push(2)
-        linkedList.push(3)
+        linkedList.addFirst(2)
         
         XCTAssertFalse(linkedList.isEmpty)
-        XCTAssertEqual(linkedList.head?.value, 3)
-        XCTAssertEqual(linkedList.tail?.value, 1)
+        XCTAssertEqual(linkedList.head?.value, 2)
+        XCTAssertEqual(linkedList.head?.value, linkedList.tail?.value)
+        
+        linkedList.addFirst(1)
+        
+        XCTAssertEqual(linkedList.head?.value, 1)
+        XCTAssertEqual(linkedList.head?.next?.value, 2)
+        XCTAssertEqual(linkedList.tail?.value, 2)
+        XCTAssertEqual(linkedList.tail?.next?.value, nil)
     }
     
-    func testAppendingValuesToList() {
+    func testAddLast() {
         var linkedList = LinkedList<Int>()
         
-        linkedList.append(1)
-        linkedList.append(2)
-        linkedList.append(3)
+        linkedList.addLast(1)
+        linkedList.addLast(2)
         
         XCTAssertFalse(linkedList.isEmpty)
         XCTAssertEqual(linkedList.head?.value, 1)
-        XCTAssertEqual(linkedList.tail?.value, 3)
-    }
-    
-    func testAddingAllToList() {
-        var linkedList = LinkedList<Int>()
-        let array = [3, 4, 5]
-        
-        linkedList.push(1)
-        linkedList.append(2)
-        linkedList.addAll(array)
-        
-        XCTAssertFalse(linkedList.isEmpty)
-        XCTAssertEqual(linkedList.head?.value, 1)
-        XCTAssertEqual(linkedList.tail?.value, 5)
-    }
-    
-    func testNodeAtIndex() {
-        var linkedList = LinkedList<Int>()
-        
-        linkedList.append(1)
-        linkedList.append(2)
-        linkedList.append(3)
-        linkedList.append(4)
-        linkedList.append(5)
-        
-        let node = linkedList.node(at: 2)
-        XCTAssertTrue(node != nil)
-        XCTAssertTrue(node?.next != nil)
-        XCTAssertEqual(node?.value, 3)
-        
-        let lastNode = linkedList.node(at: 4)
-        XCTAssertEqual(linkedList.tail, lastNode)
-    }
-    
-    func testValueAtIndex() {
-        var linkedList = LinkedList<Int>()
-        
-        linkedList.append(1)
-        linkedList.append(2)
-        linkedList.append(3)
-        linkedList.append(4)
-        linkedList.append(5)
-        
-        let value = linkedList.value(at: 3)
-        XCTAssertEqual(value, 4)
+        XCTAssertEqual(linkedList.tail?.value, 2)
+        XCTAssertEqual(linkedList.head?.next?.value, 2)
     }
     
     func testInsertAtIndex() {
         var linkedList = LinkedList<Int>()
-        let array = [0, 1, 3, 4, 5]
         
-        linkedList.addAll(array)
+        linkedList.addFirst(1)
+        linkedList.addLast(3)
+        linkedList.insert(at: 1, value: 2)
         
-        XCTAssertEqual(linkedList.value(at: 2), 3)
+        XCTAssertEqual(linkedList.head?.value, 1)
+        XCTAssertEqual(linkedList.head?.next?.value, 2)
+        XCTAssertEqual(linkedList.head?.next?.next?.value, 3)
+        XCTAssertEqual(linkedList.tail?.value, 3)
         
-        linkedList.insert(2, after: 1)
+        linkedList.insert(at: 10, value: 4)
         
-        XCTAssertEqual(linkedList.value(at: 3), 3)
-        XCTAssertEqual(linkedList.value(at: 2), 2)
+        XCTAssertEqual(linkedList.tail?.value, 4)
+        XCTAssertEqual(linkedList.head?.next?.next?.next?.value, 4)
     }
     
-    func testPopFromList() {
+    func testRemoveFirst() {
         var linkedList = LinkedList<Int>()
         
-        linkedList.push(1)
-        linkedList.append(2)
-        linkedList.append(3)
+        linkedList.addFirst(1)
+        linkedList.addLast(2)
+        linkedList.addLast(3)
+        linkedList.addLast(4)
         
-        XCTAssertEqual(linkedList.pop(), 1)
+        XCTAssertEqual(linkedList.head?.value, 1)
+        XCTAssertEqual(linkedList.head?.next?.value, 2)
+        
+        linkedList.removeFirst()
+        
+        XCTAssertEqual(linkedList.head?.value, 2)
+        XCTAssertEqual(linkedList.head?.next?.value, 3)
+        XCTAssertEqual(linkedList.head?.next?.next?.value, linkedList.tail?.value)
+        
+        linkedList.removeFirst()
+        linkedList.removeFirst()
+        
+        XCTAssertEqual(linkedList.head?.value, 4)
+        XCTAssertEqual(linkedList.head?.value, linkedList.tail?.value)
+        
+        linkedList.removeFirst()
+        
+        XCTAssertTrue(linkedList.isEmpty)
+        XCTAssertEqual(linkedList.head?.value, linkedList.tail?.value)
     }
     
-    func testRemoveLastFromList() {
+    func testRemoveLast() {
         var linkedList = LinkedList<Int>()
         
-        linkedList.push(1)
-        linkedList.append(2)
-        linkedList.append(3)
+        linkedList.addFirst(1)
+        linkedList.addLast(2)
+        linkedList.addLast(3)
+        linkedList.addLast(4)
+        linkedList.addLast(5)
         
-        XCTAssertEqual(linkedList.removeLast(), 3)
+        XCTAssertEqual(linkedList.head?.value, 1)
+        XCTAssertEqual(linkedList.tail?.value, 5)
+        
+        linkedList.removeLast()
+        
+        XCTAssertEqual(linkedList.head?.value, 1)
+        XCTAssertEqual(linkedList.tail?.value, 4)
+        XCTAssertEqual(linkedList.tail?.next?.value, nil)
+        
+        linkedList.removeLast()
+        linkedList.removeLast()
+        linkedList.removeLast()
+        
+        XCTAssertEqual(linkedList.tail?.value, 1)
+        XCTAssertEqual(linkedList.head?.value, linkedList.tail?.value)
+        
+        linkedList.removeLast()
+        
+        XCTAssertTrue(linkedList.isEmpty)
+        XCTAssertEqual(linkedList.head?.value, linkedList.tail?.value)
     }
     
-    func testRemoveAllFromList() {
+    func testRemovingAtIndex() {
         var linkedList = LinkedList<Int>()
         
-        linkedList.append(1)
-        linkedList.append(2)
-        linkedList.append(3)
+        linkedList.addFirst(1)
+        linkedList.addLast(2)
+        linkedList.addLast(3)
         
-        XCTAssertFalse(linkedList.isEmpty)
+        linkedList.remove(at: 1)
         
-        linkedList.removeAll()
+        XCTAssertEqual(linkedList.head?.value, 1)
+        XCTAssertEqual(linkedList.tail?.value, 3)
+        XCTAssertEqual(linkedList.head?.next?.value, linkedList.tail?.value)
+        
+        linkedList.remove(at: 4)
+        
+        XCTAssertEqual(linkedList.tail?.value, 1)
+        XCTAssertEqual(linkedList.tail?.value, linkedList.head?.value)
+        
+        linkedList.remove(at: 1)
         
         XCTAssertTrue(linkedList.isEmpty)
     }
     
-    func testRemoveAtIndex() {
+    func testPrintList() {
+        let expected = "1 -> 2 -> 3 -> nil"
         var linkedList = LinkedList<Int>()
         
-        linkedList.append(1)
-        linkedList.append(2)
-        linkedList.append(3)
-        linkedList.append(4)
+        linkedList.addFirst(1)
+        linkedList.addLast(2)
+        linkedList.addLast(3)
         
-        var value = linkedList.remove(at: 2)
-        XCTAssertEqual(value, 3)
-        value = linkedList.remove(at: 2)
-        XCTAssertEqual(value, 4)
-        XCTAssertEqual(linkedList.head?.value, 1)
-        XCTAssertEqual(linkedList.tail?.value, 2)
-    }
-    
-    func testCollectionImplementation() {
-        var linkedList = LinkedList<Int>()
+        let result = linkedList.printList()
         
-        linkedList.append(1)
-        linkedList.append(2)
-        linkedList.append(3)
-        
-        let sum = linkedList.reduce(0, +)
-        XCTAssertEqual(sum, 6)
-        let firstValue = linkedList[linkedList.startIndex]
-        XCTAssertEqual(1, firstValue)
-    }
-    
-    func testValueSemantics() {
-        let array = [1, 2, 3]
-        var list1 = LinkedList<Int>()
-        list1.addAll(array)
-        var list2 = list1
-        
-        list2.append(4)
-        
-        XCTAssertNotEqual(list1.tail?.value, list2.tail?.value)
+        XCTAssertEqual(expected, result)
     }
 }
 

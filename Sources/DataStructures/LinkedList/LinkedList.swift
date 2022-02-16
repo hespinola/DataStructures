@@ -6,6 +6,22 @@ public struct LinkedList<T> {
     public var isEmpty: Bool {
         head == nil
     }
+    
+    /// Determine size of list
+    /// Complexity: O(1)
+    public var count: Int {
+        guard !isEmpty else { return 0 }
+        
+        var currentIndex = 1
+        var currentNode = head
+        
+        while let next = currentNode?.next {
+            currentNode = next
+            currentIndex += 1
+        }
+        
+        return currentIndex
+    }
 
     /// Empty initializer
     public init() {}
@@ -14,7 +30,7 @@ public struct LinkedList<T> {
     /// Complexity: O(1)
     /// - Parameter value: Value to be added
     public mutating func addFirst(_ value: T) {
-        head = LinkedList(value: value, next: head)
+        head = LinkedListNode(value: value, next: head)
         if tail == nil {
             tail = head
         }
@@ -29,7 +45,7 @@ public struct LinkedList<T> {
             return
         }
         
-        tail?.next = LinkedList(value: value)
+        tail?.next = LinkedListNode(value: value)
         tail = tail?.next
     }
     
@@ -39,6 +55,16 @@ public struct LinkedList<T> {
     ///   - index: Position in the list
     ///   - value: Value to be added
     public mutating func insert(at index: Int, value: T) {
+        guard index < count else {
+            addLast(value)
+            return
+        }
+        
+        guard index > 0 else {
+            addFirst(value)
+            return
+        }
+        
         var previousNode = head
         var currentNode = head
         var currentIndex = 0
@@ -64,6 +90,13 @@ public struct LinkedList<T> {
     /// Removes the last element in the list
     /// Complexity: O(n)
     public mutating func removeLast() {
+        guard head !== tail else {
+            head?.next = nil
+            head = nil
+            tail = nil
+            return
+        }
+        
         var previousNode = head
         var currentNode = head
         
@@ -79,7 +112,17 @@ public struct LinkedList<T> {
     /// Removes element in specific position
     /// Complexity: O(n) where n is the index
     /// - Parameter index: Position to remove
-    public func remove(at index: Int) {
+    public mutating func remove(at index: Int) {
+        guard index > 0 else {
+            removeFirst()
+            return
+        }
+        
+        guard index < count else {
+            removeLast()
+            return
+        }
+        
         var previousNode = head
         var currentNode = head
         var currentIndex = 0
@@ -93,12 +136,19 @@ public struct LinkedList<T> {
         previousNode?.next = currentNode?.next
     }
     
-    public func printList() {
+    @discardableResult
+    public func printList() -> String {
         var currentNode = head
+        var output = ""
         
         while let node = currentNode {
-            print("\(node.value) -> ")
+            output += "\(node.value) -> "
             currentNode = node.next
         }
+        
+        output += "\(String(describing: tail?.next?.value ?? nil))"
+        print(output)
+        
+        return output
     }
 }
