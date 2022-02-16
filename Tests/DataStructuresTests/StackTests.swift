@@ -2,13 +2,13 @@ import XCTest
 @testable import DataStructures
 
 final class StackTests: XCTestCase {
-    func testCreateEmptyStack() throws {
+    func testCreateEmptyStack() {
         let stack = Stack<Int>()
         
         XCTAssertTrue(stack.isEmpty)
     }
     
-    func testPushIntoStack() throws {
+    func testAddToStack() {
         var stack = Stack<Int>()
         
         stack.push(1)
@@ -19,9 +19,23 @@ final class StackTests: XCTestCase {
         XCTAssertEqual(stack.peek(), 3)
     }
     
-    func testReverseArray() throws {
-        let reversed = [8, 7, 6, 5, 4, 3, 2, 1]
-        var array = [1, 2, 3, 4, 5, 6, 7, 8]
+    func testRemoveFromStack() {
+        var stack = Stack<Int>()
+        
+        stack.push(1)
+        stack.push(2)
+        stack.push(3)
+        
+        let value = stack.pop()
+        
+        XCTAssertFalse(stack.isEmpty)
+        XCTAssertEqual(value, 3)
+        XCTAssertEqual(stack.peek(), 2)
+    }
+    
+    func testReverseArrayWithStack() {
+        var array = [1, 2, 3, 4, 5]
+        let reversedArray = [5, 4, 3, 2, 1]
         var stack = Stack<Int>()
         
         for item in array {
@@ -30,11 +44,10 @@ final class StackTests: XCTestCase {
         
         array.removeAll()
         
-        while !stack.isEmpty {
-            array.append(stack.popLast()!)
+        while let value = stack.pop() {
+            array.append(value)
         }
         
-        XCTAssertEqual(array, reversed)
-        XCTAssertTrue(stack.isEmpty)
+        XCTAssertEqual(array, reversedArray)
     }
 }

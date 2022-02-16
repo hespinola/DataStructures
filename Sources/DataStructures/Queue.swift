@@ -12,14 +12,14 @@ public struct Queue<T> {
     /// Appends a value at the end of the queue
     /// Complexity: O(1)
     /// - Parameter value: Value to be added to the queue
-    public mutating func append(_ value: T) {
+    public mutating func enqueue(_ value: T) {
         list.addLast(value)
     }
     
     /// Returns and removes the first element in the queue
     /// Complexity: O(1)
     /// - Returns: The first element of the queue if any
-    public mutating func pop() -> T? {
+    public mutating func dequeue() -> T? {
         defer {
             list.removeFirst()
         }

@@ -10,9 +10,9 @@ final class QueueTests: XCTestCase {
     func testAppendToQueue() {
         var queue = Queue<Int>()
         
-        queue.append(1)
-        queue.append(2)
-        queue.append(3)
+        queue.enqueue(1)
+        queue.enqueue(2)
+        queue.enqueue(3)
         
         XCTAssertFalse(queue.isEmpty)
         XCTAssertEqual(queue.peek(), 1)
@@ -21,11 +21,11 @@ final class QueueTests: XCTestCase {
     func testPopFromQueue() {
         var queue = Queue<Int>()
         
-        queue.append(1)
-        queue.append(2)
-        queue.append(3)
+        queue.enqueue(1)
+        queue.enqueue(2)
+        queue.enqueue(3)
         
-        let value = queue.pop()
+        let value = queue.dequeue()
         
         XCTAssertFalse(queue.isEmpty)
         XCTAssertEqual(value, 1)
