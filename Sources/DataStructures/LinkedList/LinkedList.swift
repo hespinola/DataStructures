@@ -1,111 +1,69 @@
-public struct LinkedList<T> where T: Equatable {
+public struct LinkedList<T> {
     public var head: LinkedListNode<T>?
     public var tail: LinkedListNode<T>?
-    
-    
-    /// Empty initializer
-    public init() {}
-    
     
     /// Determine if the list is empty
     public var isEmpty: Bool {
         head == nil
     }
+
+    /// Empty initializer
+    public init() {}
     
-    /// Push a value to the head of the list
+    /// Add a value at the beginning
     /// Complexity: O(1)
     /// - Parameter value: Value to be added
-    public mutating func push(_ value: T) {
-        head = LinkedListNode(value: value, next: head?.next)
+    public mutating func addFirst(_ value: T) {
+        head = LinkedList(value: value, next: head)
         if tail == nil {
             tail = head
         }
     }
     
-    /// Add a new value to the tail of the list
+    /// Add a value at the end
     /// Complexity: O(1)
     /// - Parameter value: Value to be added
-    public mutating func append(_ value: T) {
+    public mutating func addLast(_ value: T) {
         guard !isEmpty else {
-            push(value)
+            addFirst(value)
             return
         }
         
-        tail?.next = LinkedListNode(value: value)
+        tail?.next = LinkedList(value: value)
         tail = tail?.next
     }
     
-    /// Add a new collection to the tail of the list
-    /// Complexity: O(n) where n is the length of the collection
-    /// - Parameter collection: Collection to be added
-    public mutating func addAll(_ collection: [T]) {
-        for item in collection {
-            append(item)
-        }
-    }
-    
-    /// Retrieve the node in a specific position
+    /// Insert value at specified position
     /// Complexity: O(n) where n is the index
-    /// - Parameter index: Position in the list
-    /// - Returns: Returns the node in the given position or nil if it's out of bounds
-    public func node(at index: Int) -> LinkedListNode<T>? {
+    /// - Parameters:
+    ///   - index: Position in the list
+    ///   - value: Value to be added
+    public mutating func insert(at index: Int, value: T) {
+        var previousNode = head
         var currentNode = head
         var currentIndex = 0
         
         while currentNode != nil && currentIndex < index {
+            previousNode = currentNode
             currentNode = currentNode?.next
             currentIndex += 1
         }
         
-        return currentNode
+        previousNode?.next = LinkedListNode(value: value, next: currentNode)
     }
     
-    /// Retrieve the value in a position
-    /// Complexity: O(n) where n is the index
-    /// - Parameter index: Position in the list
-    /// - Returns: Returns nil if the index is out of bounds
-    public func value(at index: Int) -> T? {
-        node(at: index)?.value
-    }
-    
-    /// Inserts a new value after a given index if the index is within bounds
-    /// Complexity: O(n) where n is the index
-    /// - Parameters:
-    ///   - value: Value to be added
-    ///   - index: The position in the list
-    public mutating func insert(_ value: T, after index: Int) {
-        guard let listNode = node(at: index) else {
-            return
-        }
-        
-        listNode.next = LinkedListNode(value: value, next: listNode.next)
-    }
-    
-    /// Pop first element from list
+    /// Removes the first element in the list
     /// Complexity: O(1)
-    /// - Returns: Returns first element if any
-    public mutating func pop() -> T? {
-        defer {
-            head = head?.next
-            if isEmpty {
-                tail = nil
-            }
+    public mutating func removeFirst() {
+        head = head?.next
+        if isEmpty {
+            tail = nil
         }
-        return head?.value
     }
     
-    /// Remove last item from the list
-    /// Complexity: O(n) where n is the length of the list
-    /// - Returns: Returns the last element if any
-    public mutating func removeLast() -> T? {
-        guard let _ = head else {
-            return nil
-        }
-        
-        guard head?.next != nil else {
-            return pop()
-        }
-        
+    /// Removes the last element in the list
+    /// Complexity: O(n)
+    public mutating func removeLast() {
         var previousNode = head
         var currentNode = head
         
@@ -116,45 +74,31 @@ public struct LinkedList<T> where T: Equatable {
         
         previousNode?.next = nil
         tail = previousNode
-        return currentNode?.value
     }
     
-    /// Remove all items from the list
-    /// Complexity: O(n) where n is the length of the list
-    public mutating func removeAll() {
-        var currentNode = head
-        
-        while let next = currentNode?.next {
-            currentNode?.next = nil
-            currentNode = next
-        }
-        
-        head = nil
-    }
-    
-    /// Removes node at index and returns its value
+    /// Removes element in specific position
+    /// Complexity: O(n) where n is the index
     /// - Parameter index: Position to remove
-    /// - Returns: Returns removed value if any
-    public mutating func remove(at index: Int) -> T? {
-        var currentIndex = 0
-        var currentNode = head
+    public func remove(at index: Int) {
         var previousNode = head
+        var currentNode = head
+        var currentIndex = 0
         
-        while let next = currentNode?.next, currentIndex < index {
+        while currentNode != nil && currentIndex < index {
             previousNode = currentNode
-            currentNode = next
+            currentNode = currentNode?.next
             currentIndex += 1
         }
         
-        guard currentNode != tail else {
-            defer {
-                previousNode?.next = nil
-                tail = previousNode
-            }
-            return currentNode?.value
-        }
-        
         previousNode?.next = currentNode?.next
-        return currentNode?.value
+    }
+    
+    public func printList() {
+        var currentNode = head
+        
+        while let node = currentNode {
+            print("\(node.value) -> ")
+            currentNode = node.next
+        }
     }
 }
